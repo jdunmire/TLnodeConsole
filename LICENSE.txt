@@ -1,10 +1,5 @@
 Creative Commons Attribution-ShareAlike 4.0 International Public License
 
-This License covers all of the files in this repository, with the
-execption of those included in the responsive template. A list of those
-files is included in the 'License For Reponsive Template' at the end of
-this file.
-
 By exercising the Licensed Rights (defined below), You accept and agree
 to be bound by the terms and conditions of this Creative Commons
 Attribution-ShareAlike 4.0 International Public License ("Public
@@ -351,47 +346,3 @@ Section 8 -- Interpretation.
      as a limitation upon, or waiver of, any privileges and immunities
      that apply to the Licensor or You, including from the legal
      processes of any jurisdiction or authority.
-
-End of Creative Commons Attribution-ShareAlike 4.0 International Public License
-===============================================================================
-
-License for Responsive Template Files
---------------------------------------
-The files listed below are from the Initializer HTML5 template generator:
-http://www.initializr.com/
-
-The author has licensed them under the following terms
-(http://verekia.com/initializr/responsive-template/#comment-196):
-
-    The responsive template is released under the Whatever Web Hippie
-    License a.k.a Public Domain :) Feel free to do whatever you want
-    with the HTML markup and CSS, it’s all yours. However you should be
-    aware that these components have different licenses:
-
-    * jQuery: MIT/GPL license
-    * Modernizr: MIT/BSD license
-    * Respond.js: MIT/GPL license
-
-./html/tile-wide.png
-./html/favicon.ico
-./html/fonts/glyphicons-halflings-regular.ttf
-./html/fonts/glyphicons-halflings-regular.eot
-./html/fonts/glyphicons-halflings-regular.woff
-./html/fonts/glyphicons-halflings-regular.svg
-./html/js/main.js
-./html/js/vendor/npm.js
-./html/js/vendor/bootstrap.js
-./html/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js
-./html/js/vendor/jquery-1.11.2.min.js
-./html/js/vendor/bootstrap.min.js
-./html/index.html
-./html/css/main.css
-./html/css/bootstrap.min.css
-./html/css/bootstrap.css.map
-./html/css/bootstrap-theme.min.css
-./html/css/bootstrap-theme.css
-./html/css/bootstrap-theme.css.map
-./html/css/bootstrap.css
-./html/tile.png
-./html/apple-touch-icon.png
-./html/browserconfig.xml

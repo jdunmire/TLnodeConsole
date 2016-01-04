@@ -1,0 +1,40 @@
+License for Responsive Template Files
+--------------------------------------
+The files listed below are from the Initializer HTML5 template generator:
+http://www.initializr.com/
+
+The author has licensed them under the following terms
+(http://verekia.com/initializr/responsive-template/#comment-196):
+
+    The responsive template is released under the Whatever Web Hippie
+    License a.k.a Public Domain :) Feel free to do whatever you want
+    with the HTML markup and CSS, it’s all yours. However you should be
+    aware that these components have different licenses:
+
+    * jQuery: MIT/GPL license
+    * Modernizr: MIT/BSD license
+    * Respond.js: MIT/GPL license
+
+./html/tile-wide.png
+./html/favicon.ico
+./html/fonts/glyphicons-halflings-regular.ttf
+./html/fonts/glyphicons-halflings-regular.eot
+./html/fonts/glyphicons-halflings-regular.woff
+./html/fonts/glyphicons-halflings-regular.svg
+./html/js/main.js
+./html/js/vendor/npm.js
+./html/js/vendor/bootstrap.js
+./html/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js
+./html/js/vendor/jquery-1.11.2.min.js
+./html/js/vendor/bootstrap.min.js
+./html/index.html
+./html/css/main.css
+./html/css/bootstrap.min.css
+./html/css/bootstrap.css.map
+./html/css/bootstrap-theme.min.css
+./html/css/bootstrap-theme.css
+./html/css/bootstrap-theme.css.map
+./html/css/bootstrap.css
+./html/tile.png
+./html/apple-touch-icon.png
+./html/browserconfig.xml
