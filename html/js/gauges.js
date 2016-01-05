@@ -2,24 +2,25 @@
  * Author: J.Dunmire
  */
 
-var gauges = {};
+if (typeof mqttBroker !== 'undefined') {
+    var gauges = {};
 
-var client = new Paho.MQTT.Client(
-        mqttBroker.host, mqttBroker.port,
-        mqttBroker.clientPrefix + parseInt(Math.random() * 100, 10));
+    var client = new Paho.MQTT.Client(
+            mqttBroker.host, mqttBroker.port,
+            mqttBroker.clientPrefix + parseInt(Math.random() * 100, 10));
 
-var topic = mqttBroker.topic;
+    var topic = mqttBroker.topic;
 
-jQuery(document).ready(function() {
+    jQuery(document).ready(function() {
 
-    function id2label(id) {
-        if (id in nodeID2label) {
-            return nodeID2label[id];
+        function id2label(id) {
+            if (id in nodeID2label) {
+                return nodeID2label[id];
+            }
+            return id;
         }
-        return id;
-    }
 
-    function addGauge(id) {
+        function addGauge(id) {
         $('.gauges').append(
                 '<div class="col-md-4">' +
                 '<div class="container-fluid">' +
@@ -109,3 +110,19 @@ jQuery(document).ready(function() {
     client.connect({onSuccess:onConnect});
 
 });
+} else {
+        $('.gauges').append(
+                '<div class="col-md-1"></div>' +
+                '<div class="col-md-4">' +
+                '<p></p>' +
+                '<p>' +
+                'MQTT configuration not found: probably due to a missing ' +
+                'js/mqttConfig.js file, or syntax errors in that file.' +
+                '</p>' +
+                '<p>' +
+                'Use the js/mqttConfig.js_template file as a reference to ' +
+                'create the js/mqttConfig.js file.' +
+                '</div>' +
+                '</div>'
+                );
+};
