@@ -20,6 +20,11 @@ Licenses
  * [jQuery](https://jquery.org) files are [licensed](https://jquery.org/license/)
      by the [MIT License](http://opensource.org/licenses/mit-license.php). 
 
+  * [Font Awesome 4.5.0](http://fontawesome.io/) Created by Dave Gandy.
+      - Font Awesome licensed under [SIL OFL 1.1](http://scripts.sil.org/OFL)
+      - Font Awesome code licensed under [MIT License](http://opensource.org/licenses/mit-license.html)
+      - Font Awesome documentation licensed under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+
  * Other files are covered by the [Creative Commons Attribution-ShareAlike 4.0 International Public License](https://creativecommons.org/licenses/by-sa/4.0/legalcode)
    or the _Whatever Web Hippie License_. See the LICENSE.txt and
    LICENSE_WWHL.txt files.
