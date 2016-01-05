@@ -1,0 +1,23 @@
+/*
+ * MQTT configuration
+ *
+ * Copy this to js/mqttConfig.js. Set the values in mqttBroker{} to
+ * match your network and optionally fill out the nodeID2label with more
+ * meaningful names for your nodes (perhaps a location).
+ *
+ * Do not commit js/mqttConfig.js
+ */
+
+var mqttBroker = {
+    host:'127.0.0.1',              // IP address or DNS
+    port: 10001,                   // websockets port
+    clientPrefix: 'TLnodeGauges_', // arbitrary
+    topic: 'raw/+/report',         // must match T&L Node firmware
+};
+
+// Optional node labels. The node ID will be used if it does not match
+// an entry in this table.
+var nodeID2label = {
+    //RDS_12AB: 'Living room',
+};
+

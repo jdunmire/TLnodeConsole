@@ -1,0 +1,3 @@
+# mqttConfig.js contains customized, and possibly sensitive, information
+# about a user's network. It should not be committed.
+mqttConfig.js
