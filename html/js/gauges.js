@@ -9,7 +9,7 @@ if (typeof mqttBroker !== 'undefined') {
             mqttBroker.host, mqttBroker.port,
             mqttBroker.clientPrefix + parseInt(Math.random() * 100, 10));
 
-    var topic = mqttBroker.topic;
+    var topic = mqttBroker.topicPrefix + '+/report';
 
     jQuery(document).ready(function() {
 
