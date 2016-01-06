@@ -6,6 +6,8 @@ measurements are obtained from a MQTT broker and/or a database.
 See the [Sensor Nodes](http://sensornodeinfo.rockingdlabs.com/) site for
 more details.
 
+At this point only the Gauges page is functional.
+
 Installation
 ------------
 On a system with Apache2 installed:
@@ -18,9 +20,9 @@ On a system with Apache2 installed:
     configuration.
   * Enable the web site:
 
-      $ sudo a2ensite TLnodeConsole.conf
+        $ sudo a2ensite TLnodeConsole.conf
 
-  * You can test the web site without an MQTT broker and TLnodes by
+  * You can test the web site without a MQTT broker or TLnodes by
     uncommenting the test code in `html/js/gauges.js`
 
 
