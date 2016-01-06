@@ -22,7 +22,7 @@ if (typeof mqttBroker !== 'undefined') {
 
         function addGauge(id) {
         $('.gauges').append(
-                '<div class="col-md-4">' +
+                '<div class="col-sm-4">' +
                 '<div class="container-fluid">' +
                 '<div class="row">' +
                 '<div class="justgauge" id="' + id + '"></div>' +
