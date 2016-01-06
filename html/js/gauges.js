@@ -50,7 +50,7 @@ if (typeof mqttBroker !== 'undefined') {
         });
     };
 
-    function updateGauge(id, voltage, degC) {
+    function updateGauge(id, degC, voltage) {
         gauges[id].refresh((degC * 9 / 5) + 32);
         var now = new Date();
         // Strip off the TZ information (i.e., 'GMT -0700 (PDT)')
@@ -64,7 +64,7 @@ if (typeof mqttBroker !== 'undefined') {
 
 
     function onConnect() {
-        console.log("OnConnect, subscribing");
+        //console.log("OnConnect, subscribing");
         client.subscribe(topic, {qos: 2});
     }
 
@@ -78,8 +78,8 @@ if (typeof mqttBroker !== 'undefined') {
     //Gets called whenever you receive a message for your subscriptions
     function onMessageArrived(message) {
         // Un-comment to show all messages in a 'message' div
-        $('#messages').append('<span>Topic: ' + message.destinationName
-                + '  | ' + message.payloadString + '</span><br/>');
+        //$('#messages').append('<span>Topic: ' + message.destinationName
+        //        + '  | ' + message.payloadString + '</span><br/>');
         var sensorID = message.destinationName.split('/')[1];
         var values = message.payloadString.split(',');
 
@@ -91,16 +91,14 @@ if (typeof mqttBroker !== 'undefined') {
     };
     
     /* -------- test code --------
-     */
     var nodes = ["RDS_12AB","RDS_12CD","RDS_AC18"];
     for (var key in nodes) {
         var id = nodes[key];
         if (!(id in gauges)) {
             addGauge(id);
         }
-        updateGauge(id, Math.random() * 4, Math.random() * 40);
+        updateGauge(id, Math.random() * 40, Math.random() * 4);
     }
-    /*
      * ------- test code end
      */
 
