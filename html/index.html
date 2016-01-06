@@ -39,11 +39,21 @@ body {
           </button>
           <a class="navbar-brand" href="#">T&L Node Console</a>
         </div>
+        <!-- Collect the nav links, forms, and other content for
+        toggling -->
+        <div class="collapse navbar-collapse"
+            id="navbar">
+            <ul class="nav navbar-nav">
+                <li><a href="gauges.html">Gauges</a></li>
+                <li><a href="perdev.html">Per Device</a></li>
+                <li><a href="permetric.html">Per Metric</a></li>
+            </ul>
+        </div>
+
       </div>
     </nav>
 
     <div class="container">
-      <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
           <h2>Real-time Gauges</h2>
@@ -57,7 +67,7 @@ body {
                                         role="button">View Gauges &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Per-device Chart</h2>
+          <h2>Per Device Chart</h2>
           <p>
           This chart shows all of the metrics measured by a
           single node over a selected time period (by default,
@@ -69,12 +79,12 @@ body {
                                         &raquo</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Per-metric Chart</h2>
+          <h2>Per Metric Chart</h2>
           <p>
           This chart shows a selected metric, temperature,
           light level, voltage, etc., for all of the nodes
           over a selected time period (by default, 24 hours).
-          The measurements are pulled from the database.
+          The measurements are pulled from a database.
           </p>
           <p><a class="btn btn-default"
                 href="metricsChart.html"

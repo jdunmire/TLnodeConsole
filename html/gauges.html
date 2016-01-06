@@ -28,19 +28,32 @@ body {
 <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">T&L Node Gauges</a>
-        </div> <!-- navbar -->
-    </div> <!-- container -->
-</nav>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">T&L Node Console</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for
+        toggling -->
+        <div class="collapse navbar-collapse"
+            id="navbar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                <a href="gauges.html">Gauges
+                    <span class="sr-only">(current)</span></a></li>
+                <li><a href="perdev.html">Per Device</a></li>
+                <li><a href="permetric.html">Per Metric</a></li>
+            </ul>
+        </div>
+
+      </div>
+    </nav>
 
 <div class="container-fluid">
     <!-- All gauges are on the same row. Let bootstrap deal with
