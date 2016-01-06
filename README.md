@@ -1,10 +1,28 @@
 T&L Node Console
 ================
-This is website for displaying measurements from T&L nodes. The
+This is a website for displaying measurements from T&L nodes. The
 measurements are obtained from a MQTT broker and/or a database.
 
 See the [Sensor Nodes](http://sensornodeinfo.rockingdlabs.com/) site for
 more details.
+
+Installation
+------------
+On a system with Apache2 installed:
+  * Copy the `TLnodeConsole.conf` file to the `sites-available/`
+    directory.
+  * Adjust the values in the `sites-available/TLnodeConsole.conf` to
+    match your environment.
+  * Copy the `html/js/mqttConfig.js_template` to `html/js/mqttConfig.js`
+  * Adjust settings in `html/js/mqttConfig.js` to match your MQTT
+    configuration.
+  * Enable the web site:
+
+      $ sudo a2ensite TLnodeConsole.conf
+
+  * You can test the web site without an MQTT broker and TLnodes by
+    uncommenting the test code in `html/js/gauges.js`
+
 
 Licenses
 --------
