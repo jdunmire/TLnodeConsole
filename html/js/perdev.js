@@ -50,9 +50,8 @@ $(function() {
             },
             title: {
                 text: 'Temperature'
-            }//,
-            //ceiling: 150,
-            //max: 150
+            },
+            minRange:  5
         },
         {
             labels: {
@@ -64,7 +63,10 @@ $(function() {
             title: {
                 text: 'Voltage'
             },
-            minRange: 0.1
+            minRange: 0.1,
+            max: 3.3,
+            min: 2.5
+
         },
         {
             labels: {
@@ -77,7 +79,9 @@ $(function() {
                 text: 'Elapsed Time'
             },
             opposite: true,
-            min: 0
+            min: 0,
+            max: 10
+
         },
         {
             type: 'logarithmic',
@@ -90,7 +94,9 @@ $(function() {
             title: {
                 text: 'Light Level'
             },
-            opposite: true
+            opposite: true,
+            max: 5000,
+            min: 0.01
         }
         ],
         series: [
