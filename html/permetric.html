@@ -55,13 +55,51 @@ body {
     </nav>
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-4"> </div>
-        <div class="col-md-4">
-          <h2>Coming Soon</h2>
+        <div class="row">
+            <div class="btn-group dropdown" role="group"
+                                   arial-label="valuesBtns"
+                                   id="metricmenu">
+                <button class="btn btn-default dropdown-toggle"
+                        type="button"
+                        id="label"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    Temperature
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="metricMenu">
+                    <li data="mn-temperature"><a href="#">Temperature</a></li>
+                    <li data="mn-voltage"><a href="#">Voltage</a></li>
+                    <li data="mn-elapsedTime"><a href="#">Elapsed Time</a></li>
+                    <li data="mn-ambient_lux"><a href="#">Light Level</a></li>
+                </ul>
+            </div>
+            <div class="btn-group dropdown">
+                <button class="btn btn-default dropdown-toggle"
+                        type="button" id="label"
+                                      data-toggle="dropdown"
+                                      aria-haspopup="true"
+                                      aria-expanded="false">
+                    Last 24 hours
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu"
+                    aria-labelledby="intervalMenu"
+                    >
+                    <li data="tp-T6H"><a href="#">Last 6 hours</a></li>
+                    <li data="tp-T12H"><a href="#">Last 12 hours</a></li>
+                    <li data="tp-T24H"><a href="#">Last 24 hours</a></li>
+                    <li data="tp-2D"><a href="#">Last 2 days</a></li>
+                    <li data="tp-1W"><a href="#">Last week</a></li>
+                    <li data="tp-2W"><a href="#">Last 2 weeks</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="col-md-4"> </div>
+        <div class="row" id="metric-chart">
+        </div>
       </div>
+
 
       <footer>
         <hr>
@@ -89,5 +127,11 @@ body {
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <script src="js/main.js"></script>
+
+    <script src="js/plugins.js"></script>
+    <script src="js/mqttConfig.js"></script>
+    <script src="js/permetric.js"></script>
+    <script src="js/vendor/highcharts.src.js"></script>
+    <script src="js/vendor/d3.min.js"></script>
 </body>
 </html>
