@@ -4,124 +4,107 @@
  * Author: J.Dunmire
  */
 
-var globals = {};
+var globals = {},
 
-$(function() {
-    $('#metric-chart').highcharts({
-        chart: {
-            type: 'line',
-            zoomType: 'x'
-        },
-        legend: {
-            enabled: false,
-            layout: 'vertical',
-            align: 'left',
-            x: 135,
-            verticalAlign: 'top',
-            y: 30,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-        },
-        tooltip: {
-            shared: true
-        },
-        title: {
-            useHTML: true
-        },
-        xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: {
-                day: '%H:%M<br>%b %e',
-                month: '%b %e',
-                year: '%b'
-            },
-            title: {
-                text: 'Date'
-            },
-            crosshair: true
-        },
-        yAxis: [
-        {
-            labels: {
-                format: '{value}°F',
-                style: {
-                    color: Highcharts.getOptions().colors[0]
-                }
-            },
-            title: {
-                text: 'Temperature'
-            },
-            minRange:  5
-        },
-        {
-            labels: {
-                format: '{value}V',
-                style: {
-                    color: Highcharts.getOptions().colors[1]
-                }
-            },
-            title: {
-                text: 'Voltage'
-            },
-            minRange: 0.1,
-            max: 3.3,
-            min: 2.5
+    // color palette from
+    // http://ksrowell.com/blog-visualizing-data/2012/02/02/optimal-colors-for-graphs/
+    colors = [
+        '#396AB1',
+        '#DA7C30',
+        '#3E9651',
+        '#CC2529',
+        '#535154',
+        '#6B4C9A',
+        '#922428',
+        '#948B3D',
+    ],
 
-        },
-        {
-            labels: {
-                format: '{value}s',
-                style: {
-                    color: Highcharts.getOptions().colors[2]
-                }
+    units = {
+        temperature: {
+            title: 'Temperature',
+            format: '{value} °F',
+            minRange: 5,
+            type: 'linear',
+            scale: function(value) {
+                return (Math.round(((value * 9 / 5) + 32) * 10) / 10);
             },
-            title: {
-                text: 'Elapsed Time'
-            },
-            opposite: true,
-            min: 0,
-            max: 10
-
         },
-        {
+        voltage: {
+            title: 'Voltage',
+            format: '{value}',
+            minRange: 1,
+            type: 'linear',
+            scale: function(value) {return value;},
+        },
+        elapsedTime: {
+            title: 'Elapsed Time (sec)',
+            format: '{value}',
+            minRange: 10,
+            type: 'linear',
+            scale: function(value) {return value;},
+        },
+        ambient_lux: {
+            title: 'Light intensity (lux)',
+            format: '{value}',
+            minRange: 100,
             type: 'logarithmic',
-            labels: {
-                format: '{value} lux',
-                style: {
-                    color: Highcharts.getOptions().colors[3]
-                }
-            },
-            title: {
-                text: 'Light Level'
-            },
-            opposite: true,
-            max: 5000,
-            min: 0.01
-        }
-        ],
-        series: [
-        {
-            name: 'Temperature',
-            yAxis: 0
+            scale: function(value) {return (value / 64);},
         },
-        {
-            name: 'Voltage',
-            yAxis: 1
-        },
-        {
-            name: 'Elapsed Time',
-            yAxis: 2
-        },
-        {
-            name: 'Ambient Light',
-            yAxis: 3
-        }
-        ]
-    });
-});
+    };
 
 if (typeof mqttBroker !== 'undefined') {
-    var gauges = {};
+    jQuery(document).ready(function() {
+        globals.interval = 'T24H';
+        globals.metric = 'temperature';
+        globals.metricLabel = $('#metricmenu').find('#label')
+            .html().split('<')[0];
+        globals.devices = Object.keys(nodeID2label);
+
+        globals.values = [];
+        i = 0;
+        for (var id in nodeID2label) {
+            globals.values[i++] = [];
+        }
+
+        $('#metric-chart').highcharts({
+            chart: {
+                type: 'line',
+                zoomType: 'x'
+            },
+            legend: {
+                enabled: false,
+                layout: 'vertical',
+                align: 'left',
+                x: 135,
+                verticalAlign: 'top',
+                y: 30,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            tooltip: {
+                shared: true
+            },
+            title: {
+                useHTML: true
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%H:%M<br>%b %e',
+                    month: '%b %e',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                },
+                crosshair: true
+            },
+            yAxis: [{}],
+        });
+        updateChart();
+
+    });
+
 
     /* var client = new Paho.MQTT.Client(
        mqttBroker.host, mqttBroker.port,
@@ -130,23 +113,113 @@ if (typeof mqttBroker !== 'undefined') {
        var topic = mqttBroker.topicPrefix + '+/report';
        */
 
-    jQuery(document).ready(function() {
-        globals.temperatures = [];
-        globals.voltages = [];
-        globals.times = [];
-        globals.lux = [];
-        globals.interval = 'T24H';
-        globals.metric = 'temperature';
+    function updateChart() {
+        var chart = $('#metric-chart').highcharts();
+        chart.setTitle(
+                { text: '<p class="text-center"><b>' + globals.metricLabel},
+                false);
 
-        //$('#devmenu').find('#label').html(
-         //       nodeID2label[Object.keys(nodeID2label)[0]] + ' <span class="caret"></span>').end();
-        globals.metricLabel = $('#metricmenu').find('#label').html().split('<')[0];
-        updateChart(globals.metricLabel, globals.interval);
+        chart.yAxis[0].update({
+            title: {
+                text: units[globals.metric].title
+            },
+            labels: {
+                format: units[globals.metric].format
+            },
+            minRange: units[globals.metric].minRange,
+            type: units[globals.metric].type,
+        });
+        // y-axis: units, range?, log for light.
+
+        var url = "php/getByMetric.php?interval=" + globals.interval
+            + "&metric=" + globals.metric;
+        //console.log(globals.locations[device]);
+
+        // data is an array of elements. Where element is an object with
+        // three parts: deviceid, metric, timestamp
+        //
+        // global.values is an array of arrays. The sub-array is an x,y
+        // pair.
+        //
+        // I need N array-of-array arrays. Where N is the number of devices.
+        // Could I create an object that could be used like:
+        // devIndex.DEVICEID
+        d3.csv(url, function(data) {
+            // Re-factor data
+            for (i = 0; i < globals.values.length; i++) {
+                globals.values[i] = [];
+            }
+            while (chart.series.length > 0) {
+                chart.series[0].remove(false);
+            }
+
+            for (index = 0; index < data.length; index++) {
+                deviceid = data[index].deviceid;
+                if ((devindex = $.inArray(deviceid, globals.devices)) >= 0) {
+                    var o = [];
+                    o[0] = parseInt(data[index].timestamp, 10);
+                    if (typeof data[index].metric != 'undefined'
+                            && data[index].metric != ''
+                       ) {
+                        o[1] = units[globals.metric].scale(
+                                parseFloat(data[index].metric, 10));
+
+                        globals.values[devindex].push(o.slice(0));
+                    }
+                }
+            }
+            //console.log(chart.series);
+            for (i = 1; i < globals.values.length; i++) {
+                chart.addSeries({
+                    name: nodeID2label[globals.devices[i]],
+                    data: globals.values[i],
+                    color: colors[i%colors.length],
+                }, false);
+            };
+            chart.redraw();
+        });
+
+    };
+
+    // get values from drop down menu
+    // Assumes li elements have a data attribute of the form XX-YYYYYY
+    // Where XX is a type prefix and YYYYY is the value.
+    $( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
+
+        var target = $( event.currentTarget ),
+        data, dataType, dataVal;
+
+        if (typeof $(this).attr("data") !== "undefined") {
+            data = $(this).attr("data");
+            dataType = data.substring(0,3);  // prefix
+            dataVal = data.substring(3);     // rest of string
+            //console.log(dataVal);
+        }
+
+        // Close the dropdown
+        target.closest(".dropdown").find("[data-toggle='dropdown']").dropdown("toggle");
+
+        if (dataType === "mn-") {
+            globals.metric = dataVal;
+            globals.metricLabel = target.text();
+            target.closest(".dropdown").find( '#label' ).html(
+                    target.text() + ' <span class="caret"></span>'
+                    ).end()
+                updateChart();
+            //updateChart(dataVal, 'T24H');
+        } else if (dataType === "tp-") {
+            target.closest(".dropdown").find( '#label' ).html(
+                    target.text() + ' <span class="caret"></span>'
+                    ).end()
+                globals.interval = dataVal;
+            updateChart();
+        }
+
+        return false;
 
     });
-
 } else {
-    $('.gauges').append(
+    $('#metric-chart').append(
             '<div class="col-md-1"></div>' +
             '<div class="col-md-4">' +
             '<p></p>' +
@@ -162,98 +235,3 @@ if (typeof mqttBroker !== 'undefined') {
             );
 };
 
-function updateChart(metric, interval) {
-    var chart = $('#metric-chart').highcharts();
-    console.log(metric);
-    chart.setTitle({ text: '<p class="text-center"><b>' + metric}, false);
-
-    var url = "php/getnodevalue.php?interval=" + interval
-        + "&device=" + metric;
-    //console.log(url);
-    //console.log(globals.locations[device]);
-    var chart = $('#metric-chart').highcharts();
-    d3.csv(url, function(data) {
-        // Re-factor data
-        globals.temperatures = [];
-        globals.voltages = [];
-        globals.times = [];
-        globals.lux = [];
-        $("#rangeTable").empty();
-        for (index = 0; index < data.length; index++) {
-            var o = [];
-            o[0] = parseInt(data[index].timestamp, 10);
-            if (typeof data[index].temperature != 'undefined'
-                    && data[index].temperature != ''
-               ) {
-                o[1] = Math.round(
-                        ((parseFloat(data[index].temperature, 10) * 9 / 5) + 32)
-                        * 10
-                        ) / 10;
-
-                globals.temperatures.push(o.slice(0));
-            }
-            if (typeof data[index].voltage != 'undefined'
-                    && data[index].voltage != ''
-               ) {
-                o[1] = parseFloat(data[index].voltage, 10);
-                globals.voltages.push(o.slice(0));
-            }
-            if (typeof data[index].elapsedTime != 'undefined'
-                    && data[index].elapsedTime != ''
-               ) {
-                o[1] = parseFloat(data[index].elapsedTime, 10);
-                globals.times.push(o.slice(0));
-            }
-            if (typeof data[index].ambient_lux != 'undefined'
-                    && data[index].ambient_lux != ''
-               ) {
-                o[1] = parseFloat(data[index].ambient_lux, 10) / 64 ;
-                globals.lux.push(o.slice(0));
-            }
-        }
-        //console.log(chart.series);
-        chart.series[0].setData(globals.temperatures, false);
-        chart.series[1].setData(globals.voltages, false);
-        chart.series[2].setData(globals.times, false);
-        chart.series[3].setData(globals.lux, true);
-    });
-
-};
-
-// get values from drop down menu
-// Assumes li elements have a data attribute of the form XX-YYYYYY
-// Where XX is a type prefix and YYYYY is the value.
-$( document.body ).on( 'click', '.dropdown-menu li', function( event ) {
-
-    var target = $( event.currentTarget ),
-    data, dataType, dataVal;
-
-    if (typeof $(this).attr("data") !== "undefined") {
-        data = $(this).attr("data");
-        dataType = data.substring(0,3);  // prefix
-        dataVal = data.substring(3);     // rest of string
-        //console.log(dataVal);
-    }
-
-    // Close the dropdown
-    target.closest(".dropdown").find("[data-toggle='dropdown']").dropdown("toggle");
-
-    if (dataType === "mn-") {
-        globals.metric = dataVal;
-        globals.metricLabel = target.text();
-        target.closest(".dropdown").find( '#label' ).html(
-                target.text() + ' <span class="caret"></span>'
-                ).end()
-        updateChart(globals.metricLabel, globals.interval);
-        //updateChart(dataVal, 'T24H');
-    } else if (dataType === "tp-") {
-        target.closest(".dropdown").find( '#label' ).html(
-                target.text() + ' <span class="caret"></span>'
-                ).end()
-            globals.interval = dataVal;
-        updateChart(globals.metricLabel, dataVal);
-    }
-
-    return false;
-
-});
