@@ -169,7 +169,7 @@ if (typeof mqttBroker !== 'undefined') {
                 }
             }
             //console.log(chart.series);
-            for (i = 1; i < globals.values.length; i++) {
+            for (i = 0; i < globals.values.length; i++) {
                 chart.addSeries({
                     name: nodeID2label[globals.devices[i]],
                     data: globals.values[i],
