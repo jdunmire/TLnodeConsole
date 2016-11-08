@@ -2,6 +2,8 @@
  * Author: J.Dunmire
  */
 
+var globals = {};
+
 if (typeof mqttBroker !== 'undefined') {
     var gauges = {};
 
@@ -31,7 +33,9 @@ if (typeof mqttBroker !== 'undefined') {
                         '</p>' +
                         '</div>' +
                         '<div class="row">' +
-                        '<div class="justgauge" id="' + id + '"></div>' +
+                        '<div class="justgauge" id="' + id + '">' +
+                        '<p class="text-center" id="spark-' + id + '"></p>' +
+                        '</div>' +
                         '</div>' +
                         '<div class="row">' +
                         '<p id="battery-' + id +
@@ -58,6 +62,35 @@ if (typeof mqttBroker !== 'undefined') {
             };
         };
 
+        function updateSpark(id) {
+            var url = "php/getnodevalue.php?interval=T24H" + "&device=" + id;
+            //console.log(url);
+            //console.log(globals.locations[device]);
+            d3.csv(url, function(data) {
+                // Re-factor data
+                globals.temperatures = [];
+                for (index = 0; index < data.length; index++) {
+                    var o = [];
+                    o[0] = parseInt(data[index].timestamp, 10);
+                    if (typeof data[index].temperature != 'undefined'
+                            && data[index].temperature != ''
+                       ) {
+                        o[1] = Math.round(
+                                ((parseFloat(data[index].temperature, 10) * 9 / 5) + 32)
+                                * 10
+                                ) / 10;
+
+                        globals.temperatures.push(o.slice(0));
+                    }
+                }
+                $("#spark-" + id).sparkline(globals.temperatures, {
+                    type: 'line',
+                    width: '230px',
+                });
+            });
+
+        } // end of updateSpark(id)
+
         function updateGauge(id, degC, voltage) {
             if (id2label(id) != id) {
                 gauges[id].refresh((degC * 9 / 5) + 32);
@@ -69,6 +102,7 @@ if (typeof mqttBroker !== 'undefined') {
                 $('#battery-' + id).html(
                         '<i class="fa fa-battery-1"></i>' + ' ' +
                         parseFloat(voltage).toFixed(3) + 'v');
+                updateSpark(id);
             };
         }
 
